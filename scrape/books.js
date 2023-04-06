@@ -2,33 +2,35 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 
 const url = "http://books.toscrape.com/catalogue/category/books_1/"
-const book_data = []
-async function getBooks(url){
-    try{
+
+async function getBooks(url) {
+    try {
         const response = await axios.get(url);
         const $ = cheerio.load(response.data);
 
         const books = $("article");
-        books.each(function (){
-            title = $(this).find("h3 a").text();
-            price = $(this).find(".price_color").text();
-            stock = $(this).find(".availability").text().trim();
+        const book_data = [];
+        books.each(function () {
+            const title = $(this).find("h3 a").text();
+            const price = $(this).find(".price_color").text();
+            const stock = $(this).find(".availability").text().trim();
 
-            book_data.push({title,price,stock})
+            book_data.push({ title, price, stock });
         });
 
-        if($(".next a").length > 0){
+        const nextLink = $(".next a").attr("href");
+        if (nextLink) {
             url = "http://books.toscrape.com/catalogue/category/books_1/"
-            next_page = url + $(".next a").attr("href");
-            getBooks(next_page)
+            const nextPage = url + nextLink;
+            const nextBookData = await getBooks(nextPage);
+            return book_data.concat(nextBookData);
+        } else {
+            return book_data;
         }
-        return book_data
-    }
-    catch (error){
+    } catch (error) {
         console.error(error);
+        return [];
     }
 }
 
 module.exports = getBooks;
-
-
