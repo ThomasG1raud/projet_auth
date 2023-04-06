@@ -43,8 +43,8 @@ db_database=yourdbname
 db_port=3306
 
 # Google OAuth credentials
-client_id=728067926225-ljdmb4adcvue9od7kha4s2mudir8kntj.apps.googleusercontent.com
-client_secret=GOCSPX-oWyTp5meBxBmVMy0bCgcfn6h2Et
+client_id= add your own client_id that you can get on google cloud in API and services
+client_secret= Do the same than client_id
 ```
 
 4. Passeport v.0.6.0 seems to be currently broken due to an incompatibility, use the latest v0.5.0 instead:
