@@ -8,8 +8,6 @@ const passport = require("passport");
 const cookieSession = require("cookie-session");
 require("./config/passport");
 
-const path = require('path');
-const PathPagePrincipale = path.resolve(__dirname, 'PagePrincipale.html');
 
 const app = express();
 let corsOptions = {
@@ -18,27 +16,29 @@ let corsOptions = {
 
 
 app.use(cookieSession({
-    name: 'google-auth-session',
-    keys: ['key1', 'key2']
+    name: 'auth-session',
+    keys: ['google-key1', 'google-key2', 'discord-key1', 'discord-key2']
 }));
+
+
+
 app.use(passport.initialize());
 app.use(passport.session());
-  
-app.use(cookieSession({
-    name: 'google-auth-session',
-    keys: ['key1', 'key2']
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-    
   
 app.get('/', (req, res) => {
-    res.sendFile(PathPagePrincipale);
+    res.send(`
+    <button><a href='/auth'>Login With Google</a></button>
+    <button><a href='/DiscordAuth'>Login With Discord</a></button>
+    `);
 });
-
+  
 // Auth 
 app.get('/auth' , passport.authenticate('google', { scope:
     [ 'email', 'profile' ]
+}));
+
+app.get('/DiscordAuth', passport.authenticate('discord', { scope:
+    [ 'email', 'profile']
 }));
   
 // Auth Callback
@@ -47,6 +47,13 @@ app.get( '/auth/callback',
         successRedirect: '/auth/callback/success',
         failureRedirect: '/auth/callback/failure'
 }));
+
+app.get('/DiscordAuth/callback',
+    passport.authenticate('discord', {
+        successRedirect: '/auth/callback/success',
+        failureRedirect: '/auth/callback/failure'
+}));
+
   
 // Success 
 app.get('/auth/callback/success' , (req , res) => {
@@ -105,7 +112,6 @@ db.sequelize.sync().then(() => {
     console.log('Database synchronized successfully');
 });
 
-
 // routes
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
@@ -114,4 +120,4 @@ require('./routes/user.routes')(app);
 const PORT = process.env.PORT | 3000;
 app.listen(PORT, () => {
     console.log(`Serveur écoute sur le port ${PORT}.`);
-});
+}); 
