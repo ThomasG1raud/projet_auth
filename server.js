@@ -8,6 +8,8 @@ const passport = require("passport");
 const cookieSession = require("cookie-session");
 require("./config/passport");
 
+const path = require('path');
+const PathPagePrincipale = path.resolve(__dirname, 'PagePrincipale.html');
 
 const app = express();
 let corsOptions = {
@@ -31,9 +33,9 @@ app.use(passport.session());
     
   
 app.get('/', (req, res) => {
-    res.send("<button><a href='/auth'>Login With Google</a></button>")
+    res.sendFile(PathPagePrincipale);
 });
-  
+
 // Auth 
 app.get('/auth' , passport.authenticate('google', { scope:
     [ 'email', 'profile' ]
@@ -102,6 +104,7 @@ const db = require("./models");
 db.sequelize.sync().then(() => {
     console.log('Database synchronized successfully');
 });
+
 
 // routes
 require('./routes/auth.routes')(app);
