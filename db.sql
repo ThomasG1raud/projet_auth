@@ -7,6 +7,7 @@ CREATE TABLE `users` (
   `lastName` varchar(45) NOT NULL,
   `emailId` varchar(45) NOT NULL,
   `password` LONGTEXT NOT NULL,
+  `role` ENUM('client','admin') NOT NULL DEFAULT 'client',
   PRIMARY KEY (`id`),
   UNIQUE KEY `emailId_UNIQUE` (`emailId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=142 DEFAULT CHARSET=utf8;
@@ -39,4 +40,9 @@ CREATE TABLE `comments` (
   CONSTRAINT `postFk2` FOREIGN KEY (`postId`) REFERENCES `posts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- yhygygy
+CREATE TABLE `roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_UNIQUE` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
