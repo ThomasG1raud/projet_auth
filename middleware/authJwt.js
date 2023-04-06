@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
 const { TokenExpiredError } = jwt;
+const { User, Role } = require("../models");
 
 const catchError = (err, res) => {
   if (err instanceof TokenExpiredError) {
