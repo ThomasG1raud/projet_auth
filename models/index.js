@@ -18,12 +18,11 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.user = require("../models/user.model")(sequelize);
-//db.role = require("../models/role.model")(sequelize);
+db.role = require("../models/role.model")(sequelize);
 db.refreshToken = require("../models/refreshToken.model")(sequelize);
 db.refreshToken.belongsTo(db.user, { foreignKey: "userId", targetKey: "id" });
 db.user.hasOne(db.refreshToken, { foreignKey: "userId" });
 
-/*
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",
@@ -35,7 +34,6 @@ db.user.belongsToMany(db.role, {
   otherKey: "roleId",
 });
 
-db.ROLES = ["client", "admin", "superadmin"]; 
-*/
+db.ROLES = ["client", "admin", "superadmin"];
 
 module.exports = db;
