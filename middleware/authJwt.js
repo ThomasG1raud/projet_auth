@@ -38,12 +38,18 @@ checkUserRole = (req, res, next) => {
   User.findByPk(req.userId).then((user) => {
     Role.findByPk(user.roleId).then((role) => {
       if (role.name === "client" || role.name === "admin") {
-        // Modifiez ici pour ajouter le rôle par défaut "client"
         next();
         return;
+      } else if (!role) {
+        Role.findOne({ where: { name: "client" } }).then((role) => {
+          user.setRole(role).then(() => {
+            next();
+            return;
+          });
+        });
       }
       res.status(403).send({
-        message: "Demande un role Client ou Admin!", // Modifiez ici pour ajouter le message approprié
+        message: "Demande un role Client ou Admin!",
       });
     });
   });
