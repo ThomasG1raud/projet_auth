@@ -7,7 +7,7 @@ const swaggerUi = require("swagger-ui-express");
 const passport = require("passport");
 const cookieSession = require("cookie-session");
 require("./config/passport");
-
+const getBooks = require("./scrape/books");
 const path = require('path');
 const PathPagePrincipale = path.resolve(__dirname, './templates/PagePrincipale.html');
 
@@ -105,6 +105,11 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.get("/", (req, res) => {
     res.json({ message: "Bienvenue dans l'application : Auth JWT" });
 });
+
+app.get('/books', async (req, res) => {
+    const books = await getBooks("http://books.toscrape.com/catalogue/category/books_1/");
+    res.json(books);
+})
 
 const db = require("./models");
 db.sequelize.sync().then(() => {

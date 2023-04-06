@@ -20,15 +20,15 @@ async function getBooks(url){
         if($(".next a").length > 0){
             url = "http://books.toscrape.com/catalogue/category/books_1/"
             next_page = url + $(".next a").attr("href");
-            getBooks(next_page);
+            getBooks(next_page)
         }
-        console.log(book_data);
+        return book_data
     }
     catch (error){
         console.error(error);
     }
 }
 
-getBooks(url);
+module.exports = getBooks;
 
 
