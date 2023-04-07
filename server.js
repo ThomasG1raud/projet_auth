@@ -16,6 +16,8 @@ const PathPagePrincipale = path.resolve(
   "./templates/PagePrincipale.html"
 );
 const images = require("./GestImages/images.js");
+const rateLimit = require("express-rate-limit");
+
 
 const app = express();
 app.use(helmet());
@@ -23,6 +25,13 @@ app.use(helmet());
 app.use(helmet.xssFilter());
 
 app.use(helmet.noSniff());
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 60,
+  message : "Trop de requêtes"
+});
+
 
 let corsOptions = {
   origin: "http: /localhost:3000",
@@ -121,7 +130,7 @@ app.get("/", (req, res) => {
   res.json({ message: "Bienvenue dans l'application : Auth JWT" });
 });
 
-app.get("/books", cache(200), async (req, res) => {
+app.get("/books", cache(200),limiter, async (req, res) => {
   const books = await getBooks(
     "http://books.toscrape.com/catalogue/category/books_1/"
   );
