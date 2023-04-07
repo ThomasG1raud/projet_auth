@@ -1,4 +1,5 @@
 const express = require("express");
+const helmet = require("helmet");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 require("dotenv").config();
@@ -18,6 +19,7 @@ const images = require("./GestImages/images.js");
 
 
 const app = express();
+app.use(helmet());
 let corsOptions = {
   origin: "http: /localhost:3000",
 };
