@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Galerie d'images</title>
+</head>
+<body>
+<h1>Galerie d'images</h1>
+<h2>Créer une nouvelle galerie</h2>
+<form method="POST" action="/galleries">
+    <div>
+        <label for="name">Nom:</label>
+        <input type="text" name="name" id="name">
+    </div>
+    <div>
+        <label for="description">Description:</label>
+        <input type="text" name="description" id="description">
+    </div>
+    <div>
+        <button type="submit">Créer</button>
+    </div>
+</form>
+<h2>Toutes les galeries</h2>
+<ul>
+    {{#each galleries}}
+    <li>
+        <h3>{{this.name}}</h3>
+        <p>{{this.description}}</p>
+        <ul>
+            {{#each this.images}}
+            <li><img src="/images/{{this._id}}" alt=""></li>
+            {{/each}}
+        </ul>
+        <form method="POST" action="/galleries/{{this._id}}/images">
+            <div>
+                <label for="imageId">Ajouter une image:</label>
+                <select name="imageId" id="imageId">
+                    {{#each images}}
+                    <option value="{{this._id}}">{{this._id}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div>
+                <button type="submit">Ajouter</button>
+            </div>
+        </form>
+        <form method="POST" action="/galleries/{{this._id}}?_method=DELETE">
+            <div>
+                <button type="submit">Supprimer</button>
+            </div>
+        </form>
+    </li>
+    {{/each}}
+</ul>
+</body>
+</html>
