@@ -17,6 +17,10 @@ const PathPagePrincipale = path.resolve(
   __dirname,
   "./templates/PagePrincipale.html"
 );
+const gallery = path.resolve(
+    __dirname,
+    "./templates/galerie.html"
+);
 const images = require("./GestImages/images.js");
 const rateLimit = require("express-rate-limit");
 
@@ -51,6 +55,10 @@ app.get("/", (req, res) => {
   res.sendFile(PathPagePrincipale);
 });
 
+app.get("/galerie", (req, res) => {
+    res.sendFile(gallery);
+});
+
 // Auth
 app.get(
   "/auth",
@@ -58,8 +66,8 @@ app.get(
 );
 
 app.get(
-  "/DiscordAuth",
-  passport.authenticate("discord", { scope: ["email", "profile"] })
+    "/DiscordAuth",
+    passport.authenticate("discord", { scope: ["email", "identify"] })
 );
 
 // Auth Callback
@@ -82,6 +90,7 @@ app.get(
 // Success
 app.get("/auth/callback/success", (req, res) => {
   if (!req.user) res.redirect("/auth/callback/failure");
+  console.log(req.user)
   res.send("Welcome " + req.user.email);
 });
 

@@ -54,8 +54,9 @@ npm uninstall passport
 npm install passport@0.5
 ```
 
-5. You can now launch the app:
 
+Now you should open mangoDB and connect on mongodb://localhost:27017/images.
+5. You can now launch the app:
 ```bash
 node server.js
 ```

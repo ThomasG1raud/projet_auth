@@ -1,56 +1,75 @@
+<!--Here is an example of an HTML file that allows you to upload images and display them all with the click of a button:-->
+
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Galerie d'images</title>
+    <title>Image Gallery</title>
 </head>
 <body>
-<h1>Galerie d'images</h1>
-<h2>Créer une nouvelle galerie</h2>
-<form method="POST" action="/galleries">
-    <div>
-        <label for="name">Nom:</label>
-        <input type="text" name="name" id="name">
-    </div>
-    <div>
-        <label for="description">Description:</label>
-        <input type="text" name="description" id="description">
-    </div>
-    <div>
-        <button type="submit">Créer</button>
-    </div>
+<h1>Image Gallery</h1>
+
+<!-- Form to upload an image -->
+<form id="upload-form">
+    <input type="file" name="image" accept="image/*" />
+    <button type="submit">Upload</button>
 </form>
-<h2>Toutes les galeries</h2>
-<ul>
-    {{#each galleries}}
-    <li>
-        <h3>{{this.name}}</h3>
-        <p>{{this.description}}</p>
-        <ul>
-            {{#each this.images}}
-            <li><img src="/images/{{this._id}}" alt=""></li>
-            {{/each}}
-        </ul>
-        <form method="POST" action="/galleries/{{this._id}}/images">
-            <div>
-                <label for="imageId">Ajouter une image:</label>
-                <select name="imageId" id="imageId">
-                    {{#each images}}
-                    <option value="{{this._id}}">{{this._id}}</option>
-                    {{/each}}
-                </select>
-            </div>
-            <div>
-                <button type="submit">Ajouter</button>
-            </div>
-        </form>
-        <form method="POST" action="/galleries/{{this._id}}?_method=DELETE">
-            <div>
-                <button type="submit">Supprimer</button>
-            </div>
-        </form>
-    </li>
-    {{/each}}
-</ul>
+
+<!-- Button to fetch and display all images -->
+<button id="fetch-button">Fetch Images</button>
+
+<!-- Container to display the images -->
+<div id="image-container"></div>
+
+<script>
+    // Function to upload an image to the server
+    async function uploadImage(event) {
+        event.preventDefault();
+
+        try {
+            // Get the selected file from the input element
+            const fileInput = document.querySelector('input[type=file]');
+            const file = fileInput.files[0];
+
+            // Create a FormData object and append the file
+            const formData = new FormData();
+            formData.append('image', file);
+
+            // Make a POST request to the /upload route with the FormData object
+            await fetch('/images/upload', {
+                method: 'POST',
+                body: formData
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // Function to fetch images from the server and display them on the page
+    async function fetchImages() {
+        try {
+            // Make a GET request to the /images route
+            const response = await fetch('/images/images');
+            const images = await response.json();
+
+            // Create an image element for each image and append it to the page
+            const imageContainer = document.getElementById('image-container');
+            imageContainer.innerHTML = '';
+            images.forEach(image => {
+                const img = document.createElement('img');
+                img.src = `data:${image.contentType};base64,${image.data.toString('base64')}`;
+                imageContainer.appendChild(img);
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // Add event listeners to the form and button elements
+    const uploadForm = document.getElementById('upload-form');
+    uploadForm.addEventListener('submit', uploadImage);
+
+    const fetchButton = document.getElementById('fetch-button');
+    fetchButton.addEventListener('click', fetchImages);
+</script>
 </body>
 </html>
