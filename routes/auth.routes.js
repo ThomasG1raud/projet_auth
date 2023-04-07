@@ -57,7 +57,7 @@ module.exports = function (app) {
    *          '400':
    *              description: Bad request
    */
-  app.post("/auth/signin", controller.signin);
+  app.post("/auth/signin", controller.signinUs);
   /**
    * @swagger
    * /auth/signin:
@@ -93,7 +93,7 @@ module.exports = function (app) {
    *              description: Bad request
    */
 
-  app.post("/auth/refreshtoken", controller.refreshToken);
+  app.post("/auth/refreshtoken", controller.refreshingToken);
   /**
    * @swagger
    * /auth/refreshtoken:

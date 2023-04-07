@@ -5,6 +5,7 @@ const RefreshToken = db.refreshToken;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const NodeCache = require("node-cache");
+const EventEmitterHandler = require("../tokenEventHandler");
 const cache = new NodeCache();
 
 exports.signup = (req, res) => {
@@ -22,6 +23,13 @@ exports.signup = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+
+exports.signinUs = async (req, res) =>{
+  const data = req.body;
+  const eventEmitter = new EventEmitterHandler();
+  eventEmitter.onCreation();
+  eventEmitter.emitCreation(data);
+}
 
 exports.signin = async (req, res) => {
   console.log(req.body);
@@ -68,8 +76,15 @@ exports.signin = async (req, res) => {
   });
 };
 
-exports.refreshToken = async (req, res) => {
-  const { refreshToken: requestToken } = req.body;
+exports.refreshingToken = async(req, res) => {
+  const data = req.body;
+  const eventEmitter = new EventEmitterHandler();
+  eventEmitter.onRefresh();
+  eventEmitter.emitRefresh(data);
+}
+
+exports.refreshToken = async (data) => {
+  const { refreshToken: requestToken } = data.body;
   if (requestToken == null) {
     return res
       .status(403)
