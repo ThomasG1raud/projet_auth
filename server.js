@@ -17,7 +17,6 @@ const PathPagePrincipale = path.resolve(
 );
 const images = require("./GestImages/images.js");
 
-
 const app = express();
 app.use(helmet());
 
@@ -129,7 +128,7 @@ app.get("/books", cache(200), async (req, res) => {
   res.json(books);
 });
 
-app.use('/images',images)
+app.use("/images", images);
 
 const db = require("./models");
 db.sequelize.sync().then(() => {

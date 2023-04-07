@@ -1,7 +1,7 @@
 const NodeCache = require("node-cache");
 const cache = new NodeCache();
 
-module.exports = (duration) => (req, res, next) => {
+module.exports = (duration, preCache) => (req, res, next) => {
   if (req.method !== "GET") {
     console.log("Impossible de mettre en cache autre chose qu'une requête GET");
     return next();
@@ -19,6 +19,13 @@ module.exports = (duration) => (req, res, next) => {
       res.originalSend(body);
       cache.set(key, body, duration);
     };
+
+    if (preCache) {
+      preCache().then((data) => {
+        cache.set(key, data, duration);
+      });
+    }
+
     next();
   }
 };
