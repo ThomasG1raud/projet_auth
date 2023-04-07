@@ -1,4 +1,5 @@
 const express = require("express");
+const EventEmitterHandler = require('./tokenEventHandler')
 const helmet = require("helmet");
 const bodyParser = require("body-parser");
 const cors = require("cors");
