@@ -1,5 +1,9 @@
 DROP TABLE IF EXISTS `comments`;
 DROP TABLE IF EXISTS `posts`;
+DROP TABLE IF EXISTS  refreshtokens;
+
+DROP TABLE IF EXISTS user_roles;
+DROP TABLE IF EXISTS roles;
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -46,3 +50,5 @@ CREATE TABLE `roles` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+select * from users;
