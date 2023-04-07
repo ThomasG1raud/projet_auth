@@ -14,6 +14,8 @@ const PathPagePrincipale = path.resolve(
   __dirname,
   "./templates/PagePrincipale.html"
 );
+const images = require("./GestImages/images.js");
+
 
 const app = express();
 let corsOptions = {
@@ -119,6 +121,8 @@ app.get("/books", cache(200), async (req, res) => {
   );
   res.json(books);
 });
+
+app.use('/images',images)
 
 const db = require("./models");
 db.sequelize.sync().then(() => {
