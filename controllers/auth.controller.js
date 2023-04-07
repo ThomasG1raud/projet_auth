@@ -4,6 +4,8 @@ const User = db.user;
 const RefreshToken = db.refreshToken;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const NodeCache = require("node-cache");
+const cache = new NodeCache();
 
 exports.signup = (req, res) => {
   // Enregistrer l'utilisateur dans la base de données
@@ -20,43 +22,52 @@ exports.signup = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
-exports.signin = (req, res) => {
+
+exports.signin = async (req, res) => {
   console.log(req.body);
-  User.findOne({
-    where: {
-      emailId: req.body.emailId,
-    },
-  })
-    .then(async (user) => {
-      if (!user) {
-        return res.status(404).send({ message: "Utilisateur non trouvé." });
-      }
-      let passwordIsValid = bcrypt.compareSync(
-        req.body.password,
-        user.password
-      );
-      if (!passwordIsValid) {
-        return res.status(401).send({
-          accessToken: null,
-          message: "Mot de passe incorrect!",
-        });
-      }
-      let token = jwt.sign({ id: user.id }, config.secret, {
-        //expiresIn: 86400 // 24 heures
-        expiresIn: config.jwtExpiration,
-      });
-      let refreshToken = await RefreshToken.createToken(user);
-      res.status(200).send({
-        id: user.id,
-        username: user.emailId,
-        accessToken: token,
-        refreshToken: refreshToken,
-      });
-    })
-    .catch((err) => {
+
+  const cacheKey = `user:${req.body.emailId}`;
+  let user = cache.get(cacheKey);
+
+  if (!user) {
+    user = await User.findOne({
+      where: {
+        emailId: req.body.emailId,
+      },
+    }).catch((err) => {
       res.status(500).send({ message: err.message });
     });
+
+    if (!user) {
+      return res.status(404).send({ message: "Utilisateur non trouvé." });
+    }
+
+    cache.set(cacheKey, user);
+  }
+
+  let passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+
+  if (!passwordIsValid) {
+    return res.status(401).send({
+      accessToken: null,
+      message: "Mot de passe incorrect!",
+    });
+  }
+
+  let token = jwt.sign({ id: user.id }, config.secret, {
+    expiresIn: config.jwtExpiration,
+  });
+
+  let refreshToken = await RefreshToken.createToken(user);
+
+  res.status(200).send({
+    id: user.id,
+    username: user.emailId,
+    accessToken: token,
+    refreshToken: refreshToken,
+  });
 };
+
 exports.refreshToken = async (req, res) => {
   const { refreshToken: requestToken } = req.body;
   if (requestToken == null) {
