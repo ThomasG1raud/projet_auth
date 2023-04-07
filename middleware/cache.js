@@ -7,9 +7,9 @@ module.exports = (duration) => (req, res, next) => {
     return next();
   }
   const key = req.originalUrl;
-  const cacheResponse = cache.get(key);
+  const cachedResponse = cache.get(key);
 
-  if (cacheResponse) {
+  if (cachedResponse) {
     console.error("Cache hit pour ${key}");
     res.send(cachedResponse);
   } else {
