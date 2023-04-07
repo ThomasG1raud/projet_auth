@@ -20,6 +20,11 @@ const images = require("./GestImages/images.js");
 
 const app = express();
 app.use(helmet());
+
+app.use(helmet.xssFilter());
+
+app.use(helmet.noSniff());
+
 let corsOptions = {
   origin: "http: /localhost:3000",
 };
