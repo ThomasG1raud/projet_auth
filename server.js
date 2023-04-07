@@ -10,6 +10,7 @@ const cookieSession = require("cookie-session");
 require("./config/passport");
 const getBooks = require("./scrape/books");
 const path = require("path");
+const { preCache, resources } = require("./cache/preCache");
 const cache = require("./middleware/cache");
 const PathPagePrincipale = path.resolve(
   __dirname,
@@ -17,7 +18,6 @@ const PathPagePrincipale = path.resolve(
 );
 const images = require("./GestImages/images.js");
 const rateLimit = require("express-rate-limit");
-
 
 const app = express();
 app.use(helmet());
@@ -29,12 +29,11 @@ app.use(helmet.noSniff());
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 60,
-  message : "Trop de requêtes"
+  message: "Trop de requêtes",
 });
 
-
 let corsOptions = {
-  origin: "http: /localhost:3000",
+  origin: "http://localhost:3000",
 };
 
 app.use(
@@ -130,12 +129,28 @@ app.get("/", (req, res) => {
   res.json({ message: "Bienvenue dans l'application : Auth JWT" });
 });
 
-app.get("/books", cache(200),limiter, async (req, res) => {
-  const books = await getBooks(
-    "http://books.toscrape.com/catalogue/category/books_1/"
-  );
-  res.json(books);
-});
+// Pre-caching pour books
+preCache(cache);
+
+app.get(
+  "/books",
+  cache.middleware(200, () =>
+    getBooks("http://books.toscrape.com/catalogue/category/books_1/")
+  ),
+  limiter,
+  async (req, res) => {
+    const cachedBooks = await cache.get(req.originalUrl);
+    if (cachedBooks) {
+      res.json(cachedBooks);
+    } else {
+      const books = await getBooks(
+        "http://books.toscrape.com/catalogue/category/books_1/"
+      );
+      cache.set(req.originalUrl, books, 200);
+      res.json(books);
+    }
+  }
+);
 
 app.use("/images", images);
 

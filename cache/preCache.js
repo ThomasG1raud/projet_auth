@@ -1,4 +1,5 @@
 const getBooks = require("../scrape/books");
+const cache = require("../middleware/cache");
 
 const resources = [
   {
