@@ -1,8 +1,6 @@
-const fs = require("fs");
 const control = require('./controllers/auth.controller');
 const chalk = require('chalk')
 const EventEmitter = require('events');
-// TODO
 class EventEmitterHandler {
     constructor() {
         this.emitter = new EventEmitter();

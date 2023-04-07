@@ -83,8 +83,8 @@ exports.refreshingToken = async(req, res) => {
   eventEmitter.emitRefresh(data);
 }
 
-exports.refreshToken = async (data) => {
-  const { refreshToken: requestToken } = data.body;
+exports.refreshToken = async (req, res) => {
+  const { refreshToken: requestToken } = req.body;
   if (requestToken == null) {
     return res
       .status(403)
