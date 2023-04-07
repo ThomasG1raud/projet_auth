@@ -26,7 +26,7 @@ app.use(helmet.xssFilter());
 
 app.use(helmet.noSniff());
 
-const limiter = rateLimit({
+const limiter = new rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 60,
   message : "Trop de requêtes"
