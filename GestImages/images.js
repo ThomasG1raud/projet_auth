@@ -106,7 +106,11 @@ router.get('/galleries', async (req, res) => {
 router.get('/galleries/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const gallery = await Gallery.findById(id).populate('images');
+        let safeId = id;
+        if (Array.isArray(id)) {
+            safeId = id.pop();
+        }
+        const gallery = await Gallery.findById(safeId).populate('images');
         res.send(gallery);
     } catch (error) {
         res.status(400).send(error.message);
