@@ -24,7 +24,6 @@ passport.use(new DiscordStrategy({
     clientID: process.env.DISCORD_CLIENT_ID,
     clientSecret: process.env.DISCORD_CLIENT_SECRET,
     callbackURL:"http://localhost:3000/DiscordAuth/callback",
-    scope: ['email', 'identify', 'guilds'],
     passReqToCallback:true
   },
   function(request, accessToken, refreshToken, profile, done) {

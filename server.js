@@ -82,16 +82,49 @@ app.get(
 app.get(
   "/DiscordAuth/callback",
   passport.authenticate("discord", {
-    successRedirect: "/auth/callback/success",
+    successRedirect: "/auth/callback/successDiscord",
     failureRedirect: "/auth/callback/failure",
   })
 );
+
+app.get("/logout", (req, res) => {
+    req.logout();
+    res.redirect("/");
+});
+
+app.get("/auth/callback/successDiscord", (req, res) => {
+    if (!req.user) res.redirect("/auth/callback/failure");
+    console.log(req.user)
+  const { username, discriminator, avatar } = req.user;
+
+  res.send(`
+    <h1>Welcome ${username}#${discriminator}</h1>
+    <img src="https://cdn.discordapp.com/avatars/${req.user.id}/${req.user.avatar}.png" alt="Avatar">
+    <p>Here are your Discord details:</p>
+    <ul>
+      <li>Username: ${username}</li>
+      <li>Discriminator: ${discriminator}</li>
+      <li>User ID: ${req.user.id}</li>
+      <li>Avatar: <img src="https://cdn.discordapp.com/avatars/${req.user.id}/${avatar}.png?size=64"></li>
+    </ul>
+    <a href="/logout">Logout</a>
+    <br>
+    <a href="/">Return to main page</a>
+  `);
+});
 
 // Success
 app.get("/auth/callback/success", (req, res) => {
   if (!req.user) res.redirect("/auth/callback/failure");
   console.log(req.user)
-  res.send("Welcome " + req.user.email);
+  res.send(`
+        <h1>Welcome ${req.user.displayName}</h1>
+        <h1>Ton adresse mail est : ${req.user.emails[0].value}</h1>
+        <img src="${req.user.picture}" alt="Profile Picture">
+        <a href="/logout">Logout</a>
+        <br>
+        <a href="/">Return to main page</a>
+    `);
 });
 
 // failure
