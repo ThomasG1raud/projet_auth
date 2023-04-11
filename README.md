@@ -9,7 +9,7 @@ This project uses the following technologies:
 - Express.js for creating the microservice
 - JSON Web Tokens for authentication
 - Passport.js for social sign-in authentication
-  -Sequelize ORM for interacting with the database
+- Sequelize ORM for interacting with the database
 - CORS middleware for handling cross-origin requests
 - Swagger UI for API documentation
 - Chai and Mocha for unit testing
@@ -43,8 +43,8 @@ db_database=yourdbname
 db_port=3306
 
 # Google OAuth credentials
-client_id= add your own client_id that you can get on google cloud in API and services
-client_secret= Do the same than client_id
+client_id = Add your own client_id, you can get one on google cloud in API and services
+client_secret = Same thing for client_secret
 ```
 
 4. Passeport v.0.6.0 seems to be currently broken due to an incompatibility, use the latest v0.5.0 instead:
@@ -54,14 +54,14 @@ npm uninstall passport
 npm install passport@0.5
 ```
 
+5. Next, launch MongoDB and establish a connection to the "images" database using the following address: mongodb://localhost:27017/images.
 
-Now you should open mangoDB and connect on mongodb://localhost:27017/images.
-5. You can now launch the app:
+6. You can now launch the app:
 ```bash
 node server.js
 ```
 
-6. Open a browser and navigate to **'http://localhost:3000/api-docs/'** to view the application.
+7. Open a browser and navigate to **'http://localhost:3000/'** to view the application.
 
 That's it!
 
