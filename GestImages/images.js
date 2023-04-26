@@ -3,9 +3,10 @@ const multer = require('multer');
 const sharp = require('sharp');
 const mongoose = require('mongoose');
 const router = express.Router();
+const Joi = require('joi');
 
 // Connecter à la base de données
-mongoose.connect('mongodb://localhost:27017/images', { useNewUrlParser: true });
+//mongoose.connect('mongodb://localhost:27017/images', { useNewUrlParser: true });
 
 // Définir un schéma et un modèle pour les images
 const imageSchema = new mongoose.Schema({
@@ -142,9 +143,13 @@ router.delete('/galleries', async (req, res) => {
 });
 
 //supprimer une gallerie
+
+
+const idSchema = Joi.number().integer().positive().required();
+
 router.delete('/galleries/:id', async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id } = await idSchema.validateAsync(req.params.id);
         await Gallery.deleteOne({ _id: id });
         res.send({ message: 'Gallery deleted' });
     } catch (error) {
