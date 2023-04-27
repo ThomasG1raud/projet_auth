@@ -25,10 +25,45 @@ const convert = path.resolve(
     __dirname,
     "./templates/converter.html"
 );
+const chat = path.resolve(
+    __dirname,
+    "./index.html"
+)
 const images = require("./GestImages/images.js");
 const rateLimit = require("express-rate-limit");
 
 const app = express();
+var server = require('http').createServer(app)
+var io = require('socket.io')(server)
+usernames = []
+io.sockets.on('connection', function (socket){
+  console.log("socket connecté")
+  socket.on('new user', function (data, callback){
+    if(usernames.indexOf(data) != -1){
+      callback(false)
+    }
+    else{
+      callback(true)
+      socket.username = data;
+      usernames.push(socket.username);
+      updateUsername();
+    }
+    function updateUsername(){
+      io.socket.emit('usernames', usernames);
+    }
+    socket.on('send message', function(data){
+      io.socket.emit('new message', {msg: data, user: socket.username});
+    });
+    socket.on('disconnect', function(data){
+      if(!socket.username){
+        return
+      }
+      usernames.splice(usernames.indexOf(socket.username), 1);
+      updateUsername();
+    })
+  });
+});
+
 app.use(helmet());
 
 app.use(helmet.xssFilter());
@@ -58,6 +93,10 @@ app.use(passport.session());
 
 app.get("/", (req, res) => {
   res.sendFile(PathPagePrincipale);
+});
+
+app.get("/chat", function (req, res){
+  res.sendFile(chat)
 });
 
 app.get("/galerie", (req, res) => {
@@ -122,6 +161,7 @@ app.get("/auth/callback/successDiscord", (req, res) => {
 app.get("/auth/callback/success", (req, res) => {
   if (!req.user) res.redirect("/auth/callback/failure");
   console.log(req.user)
+  usernames.push(req.user.displayName)
   res.send(`
         <h1>Welcome ${req.user.displayName}</h1>
         <h1>Ton adresse mail est : ${req.user.emails[0].value}</h1>

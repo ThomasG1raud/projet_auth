@@ -25,7 +25,8 @@ class TokenEventEmitterHandler {
   }
   onRefresh(){
     this.emitter.on("token_refresh", async (arg)=>{
-      console.log(chalk.blue.inverse("refreshing start"));
+      let message = "refreshing start"
+      console.log(chalk.blue.inverse(message));
       const refreshed = await control.refreshToken(arg.req, arg.res);
       console.log(chalk.blue.inverse("refreshing end"));
       console.log("The refreshed token : "+refreshed);
