@@ -48,10 +48,11 @@ CLIENT_SECRET = Same thing for CLIENT_SECRET
 
 # Discord OAuth credentials
 
-DISCORD_CLIENT_ID = Add your own DISCORD_CLIENT_ID, you can get one on Discord cloud in API and services
+DISCORD_CLIENT_ID = Add your own DISCORD_CLIENT_ID, you can get one on Discord application 
 DISCORD_CLIENT_SECRET = Same thing for DISCORD_CLIENT_SECRET
 ```
-## You can follow the tutorial for getting your credentials in the report of the project.
+## You can follow the tutorial to get your credentials in the part "2.1.3 Tutoriel pour vous procurez les credentials pour Google et Discord
+" of our project report.
 
 4. Passeport v.0.6.0 seems to be currently broken due to an incompatibility, use the latest v0.5.0 instead:
 
@@ -70,8 +71,6 @@ node server.js
 7. Open a browser and navigate to **'http://localhost:3000/'** to view the application.
 
 That's it!
-
-Firstly 
 
 ## Sources
 
