@@ -21,6 +21,10 @@ const gallery = path.resolve(
     __dirname,
     "./templates/galerie.html"
 );
+const convert = path.resolve(
+    __dirname,
+    "./templates/converter.html"
+);
 const images = require("./GestImages/images.js");
 const rateLimit = require("express-rate-limit");
 
@@ -195,6 +199,10 @@ app.get(
     }
   }
 );
+
+app.get("/convert", (req, res) => {
+  res.sendFile(convert);
+});
 
 app.use("/images", images);
 

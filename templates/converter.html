@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Convertir un fichier MP4 en MP3</title>
+</head>
+<body>
+<h1>Convertir un fichier MP4 en MP3</h1>
+<label for="input-file">Choisir un fichier MP4 :</label>
+<input type="file" id="input-file"><br><br>
+<button onclick="convert()">Convertir</button>
+
+<script>
+    function convert() {
+        const inputFile = document.getElementById('input-file').files[0];
+        if (inputFile) {
+            const outputFileName = inputFile.name.replace(/\.[^/.]+$/, "") + '.mp3';
+            const outputFilePath = `${outputFileName}`;
+            convertMP4toMP3(inputFile, outputFilePath);
+        } else {
+            console.error('Veuillez choisir un fichier MP4');
+        }
+    }
+
+    function convertMP4toMP3(inputFile, outputFilePath) {
+        const input = inputFile;
+        const output = fs.createWriteStream(outputFilePath);
+
+        const command = ffmpeg(input)
+            .format('mp3')
+            .audioBitrate('128k')
+            .audioChannels(2)
+            .audioFrequency(44100)
+            .on('error', (err) => {
+                console.error('Erreur de conversion:', err.message);
+            })
+            .on('end', () => {
+                console.log('Conversion terminée');
+                download(outputFilePath);
+            });
+
+        command.pipe(output, { end: true });
+    }
+
+    function download(url) {
+        const a = document.createElement("a");
+        document.body.appendChild(a);
+        a.style = "display: none";
+        a.href = url;
+        a.download = url.split('/').pop();
+        a.click();
+        window.URL.revokeObjectURL(url);
+    }
+</script>
+</body>
+</html>

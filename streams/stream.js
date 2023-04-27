@@ -21,5 +21,6 @@ function convertMP4toMP3(inputFilePath, outputFilePath) {
 }
 
 convertMP4toMP3('./Homer.mp4', './Homer.mp3');
+convertMP4toMP3('Vito.mp4', './Vito.mp3');
 
 
