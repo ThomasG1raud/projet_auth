@@ -36,15 +36,23 @@ npm install
 
 ```bash
 # Database configuration
-db_host=localhost
-db_username=yourusername
-db_password=yourdbpassword
-db_database=yourdbname
-db_port=3306
+DB_HOST=localhost
+DB_USERNAME=yourusername
+DB_PASSWORD=yourdbpassword
+DB_DATABASE=yourdbname
+DB_PORT=3306
 
 # Google OAuth credentials
-client_id = Add your own client_id, you can get one on google cloud in API and services
-client_secret = Same thing for client_secret
+CLIENT_ID = Add your own CLIENT_ID, you can get one on google cloud in API and services
+CLIENT_SECRET = Same thing for CLIENT_SECRET
+
+# Discord OAuth credentials
+
+DISCORD_CLIENT_ID = Add your own DISCORD_CLIENT_ID, you can get one on Discord cloud in API and services
+DISCORD_CLIENT_SECRET = Same thing for DISCORD_CLIENT_SECRET
+
+## You can follow the tutorial for getting your credentials below in the readme
+
 ```
 
 4. Passeport v.0.6.0 seems to be currently broken due to an incompatibility, use the latest v0.5.0 instead:
