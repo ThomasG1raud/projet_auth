@@ -102,10 +102,9 @@ exports.signin = async (req, res) => {
 };
 
 exports.refreshingToken = async(req, res) => {
-  const data = req.body;
-  const eventEmitter = new EventEmitterHandler();
+  const eventEmitter = new TokenEventEmitterHandler();
   eventEmitter.onRefresh();
-  eventEmitter.emitRefresh(data);
+  eventEmitter.emitRefresh(req,res);
 }
 
 exports.refreshToken = async (req, res) => {
