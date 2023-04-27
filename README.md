@@ -50,10 +50,8 @@ CLIENT_SECRET = Same thing for CLIENT_SECRET
 
 DISCORD_CLIENT_ID = Add your own DISCORD_CLIENT_ID, you can get one on Discord cloud in API and services
 DISCORD_CLIENT_SECRET = Same thing for DISCORD_CLIENT_SECRET
-
-## You can follow the tutorial for getting your credentials below in the readme
-
 ```
+## You can follow the tutorial for getting your credentials in the report of the project.
 
 4. Passeport v.0.6.0 seems to be currently broken due to an incompatibility, use the latest v0.5.0 instead:
 
@@ -72,6 +70,8 @@ node server.js
 7. Open a browser and navigate to **'http://localhost:3000/'** to view the application.
 
 That's it!
+
+Firstly 
 
 ## Sources
 
