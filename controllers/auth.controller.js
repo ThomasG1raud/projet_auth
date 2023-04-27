@@ -5,8 +5,36 @@ const RefreshToken = db.refreshToken;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const NodeCache = require("node-cache");
-const EventEmitterHandler = require("../tokenEventHandler");
 const cache = new NodeCache();
+const control = require('../controllers/auth.controller');
+const chalk = require('chalk')
+const EventEmitter = require('events');
+class TokenEventEmitterHandler {
+  constructor() {
+    this.emitter = new EventEmitter();
+  }
+  onCreation(){
+    this.emitter.on("token_creation", async(args)=>{
+      console.log(chalk.red.inverse("creation start"));
+      await control.signin(args.req,args.res);
+      console.log(chalk.red.inverse("creation end"));
+    });
+  }
+  emitCreation(req, res){
+    this.emitter.emit("token_creation",{req:req, res:res});
+  }
+  onRefresh(){
+    this.emitter.on("token_refresh", async (arg)=>{
+      console.log(chalk.blue.inverse("refreshing start"));
+      const refreshed = await control.refreshToken(arg.req, arg.res);
+      console.log(chalk.blue.inverse("refreshing end"));
+      console.log("The refreshed token : "+refreshed);
+    })
+  }
+  emitRefresh(req, res){
+    this.emitter.emit("token_refresh", {req:req, res:res})
+  }
+}
 
 exports.signup = (req, res) => {
   // Enregistrer l'utilisateur dans la base de données
@@ -25,15 +53,12 @@ exports.signup = (req, res) => {
 };
 
 exports.signinUs = async (req, res) =>{
-  const data = req.body;
-  const eventEmitter = new EventEmitterHandler();
-  eventEmitter.onCreation();
-  eventEmitter.emitCreation(data);
+  const eventEmitterHandler = new TokenEventEmitterHandler();
+  eventEmitterHandler.onCreation();
+  eventEmitterHandler.emitCreation(req, res);
 }
 
 exports.signin = async (req, res) => {
-  console.log(req.body);
-
   const cacheKey = `user:${req.body.emailId}`;
   let user = cache.get(cacheKey);
 
@@ -43,7 +68,7 @@ exports.signin = async (req, res) => {
         emailId: req.body.emailId,
       },
     }).catch((err) => {
-      res.status(500).send({ message: err.message });
+      return res.status(500).send({ message: err.message });
     });
 
     if (!user) {
