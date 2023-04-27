@@ -18,10 +18,6 @@ const PathPagePrincipale = path.resolve(
   __dirname,
   "./templates/PagePrincipale.html"
 );
-const gallery = path.resolve(
-    __dirname,
-    "./templates/galerie.html"
-);
 const convert = path.resolve(
     __dirname,
     "./templates/converter.html"
@@ -65,6 +61,21 @@ io.sockets.on('connection', function (socket){
     })
   });
 });
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Use the images router for requests to the /images path
+app.use('/images', images);
+
+// Serve the image.html file for requests to the root path
+app.get('/image', (req, res) => {
+  res.sendFile(path.join(__dirname, 'templates', 'image.html'));
+});
+
+// Serve the gallery.html file for requests to the root path
+app.get('/gallery', (req, res) => {
+  res.sendFile(path.join(__dirname, 'templates', 'gallery.html'));
+});
 
 app.use(helmet());
 
@@ -99,10 +110,6 @@ app.get("/", (req, res) => {
 
 app.get("/chat", function (req, res){
   res.sendFile(chat)
-});
-
-app.get("/galerie", (req, res) => {
-    res.sendFile(gallery);
 });
 
 // Auth

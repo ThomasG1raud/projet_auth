@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Galeries</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://cdnjs.cloudflare.com; script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' http://cdnjs.cloudflare.com ">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'">
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Project Authentification</a>
+        <ul class="nav justify-content-end">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="api-docs">Api-Docs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/auth">Login with google</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/DiscordAuth">Login with discord</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/books">Scraping</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/image">Images</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/gallery">Galerie</a>
+            </li>
+        </ul>
+    </div>
+    </div>
+</nav>
+<h1>Image Gallery</h1>
+<form action="/galleries" method="POST">
+    <label for="name">Gallery Name:</label>
+    <input type="text" id="name" name="name"><br><br>
+    <label for="description">Gallery Description:</label>
+    <input type="text" id="description" name="description"><br><br>
+    <button type="submit">Create Gallery</button>
+</form>
+<div id="galleries"></div>
+<button id="show-galleries">Show Galleries</button>
+</body>
+<script src="/scripts/gallery.js"></script>
+</html>
