@@ -47,11 +47,11 @@ CLIENT_ID = Add your own CLIENT_ID, you can get one on google cloud in API and s
 CLIENT_SECRET = Same thing for CLIENT_SECRET
 
 # Discord OAuth credentials
-
-DISCORD_CLIENT_ID = Add your own DISCORD_CLIENT_ID, you can get one on Discord application 
+DISCORD_CLIENT_ID = Add your own DISCORD_CLIENT_ID, you can get one on the Discord application 
 DISCORD_CLIENT_SECRET = Same thing for DISCORD_CLIENT_SECRET
 ```
-## You can follow the tutorial to get your credentials in the part "2.1.3 Tutoriel pour vous procurez les credentials pour Google et Discord" of our project report.
+
+*If you do not already have them, you can follow the tutorial to get your credentials in the part **2.1.3** of our project report.*
 
 4. Passeport v.0.6.0 seems to be currently broken due to an incompatibility, use the latest v0.5.0 instead:
 
