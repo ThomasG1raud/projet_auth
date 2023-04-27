@@ -12,6 +12,7 @@ require("./config/passport");
 const getBooks = require("./scrape/books");
 const path = require("path");
 const { preCache, resources } = require("./cache/preCache");
+var morgan = require('morgan')
 const cache = require("./middleware/cache");
 const PathPagePrincipale = path.resolve(
   __dirname,
@@ -33,6 +34,7 @@ const images = require("./GestImages/images.js");
 const rateLimit = require("express-rate-limit");
 
 const app = express();
+app.use(morgan('combined'));
 var server = require('http').createServer(app)
 var io = require('socket.io')(server)
 usernames = []
@@ -254,6 +256,8 @@ db.sequelize.sync().then(() => {
 // routes
 require("./routes/auth.routes")(app);
 require("./routes/user.routes")(app);
+
+
 
 // définir le port, écouter les requêtes
 const PORT = process.env.PORT | 3000;
