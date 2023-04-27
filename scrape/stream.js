@@ -11,7 +11,7 @@ function convertMP4toMP3(inputFilePath, outputFilePath) {
         .audioChannels(2)
         .audioFrequency(44100)
         .on('error', (err) => {
-            console.error('An error occurred:', err.message);
+            console.error('Erreur de conversion:', err.message);
         })
         .on('end', () => {
             console.log('Conversion complete');
@@ -20,6 +20,6 @@ function convertMP4toMP3(inputFilePath, outputFilePath) {
     command.pipe(output, { end: true });
 }
 
-convertMP4toMP3('./run.mp4', './run.mp3');
+convertMP4toMP3('./Homer.mp4', './Homer.mp3');
 
 
