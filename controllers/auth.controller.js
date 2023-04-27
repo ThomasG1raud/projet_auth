@@ -5,6 +5,7 @@ const RefreshToken = db.refreshToken;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const NodeCache = require("node-cache");
+const EventEmitterHandler = require("../tokenEventHandler");
 const cache = new NodeCache();
 const control = require('../controllers/auth.controller');
 const chalk = require('chalk')
