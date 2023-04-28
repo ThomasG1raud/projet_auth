@@ -4,6 +4,9 @@ const sharp = require('sharp');
 const mongoose = require('mongoose');
 const router = express.Router();
 const Joi = require('joi');
+const hpp = require('hpp');
+const app = express();
+
 
 // Connecter à la base de données
 mongoose.connect('mongodb://localhost:27017/images', { useNewUrlParser: true });
@@ -114,20 +117,31 @@ router.get('/galleries', async (req, res) => {
     }
 });
 
+const idSchem = Joi.string().regex(/^[a-zA-Z0-9]+$/).required();
+app.use(hpp());
+
+
 //Route recuperer une seule galerie
-router.get('/galleries/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        let safeId = id;
-        if (Array.isArray(id)) {
-            safeId = id.pop();
-        }
-        const gallery = await Gallery.findById(safeId).populate('images');
-        res.send(gallery);
-    } catch (error) {
-        res.status(400).send(error.message);
+app.get('/gallerie/:id', (req, res, next) => {
+    const { error, value } = idSchem.validate(req.params.id);
+    
+    if (error) {
+      return res.status(400).send(error.message);
     }
-});
+    
+    req.params.id = value;
+    
+    next();
+  }, async (req, res) => {
+    const { id } = req.params;
+    
+    try {
+      const gallery = await Gallery.findById(id).populate('images');
+      res.send(gallery);
+    } catch (error) {
+      res.status(400).send(error.message);
+    }
+  });
 
 //ajouter une image a une galerie
 router.patch('/galleries/:id/images', async (req, res) => {
