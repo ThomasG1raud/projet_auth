@@ -91,7 +91,7 @@ const limiter = rateLimit({
 
 let corsOptions = {
   origin: "http://localhost:3000",
-  methods: ['GET', 'POST']
+   // methods: ['GET', 'POST']
 };
 
 app.use(

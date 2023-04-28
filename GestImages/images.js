@@ -1,4 +1,4 @@
-const express = require('express');
+/*const express = require('express');
 const multer = require('multer');
 const sharp = require('sharp');
 const mongoose = require('mongoose');
@@ -158,7 +158,7 @@ router.delete('/galleries/:id', async (req, res) => {
 });
 
 
-// module.exports = router;
+// module.exports = router; */
 
 const express = require('express');
 const multer = require('multer');
