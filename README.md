@@ -60,7 +60,7 @@ npm uninstall passport
 npm install passport@0.5
 ```
 
-5. Next, launch MongoDB and establish a connection to the "images" database using the following address: mongodb://localhost:27017/images.
+5. Next, launch MongoDB and establish a connection to the "images" database using the following address: mongodb://localhost:27017/images. (The connection is commented on because it causes the site to crash)
 
 6. You can now launch the app:
 ```bash
