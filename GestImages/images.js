@@ -6,6 +6,8 @@ const router = express.Router();
 const Joi = require('joi');
 const hpp = require('hpp');
 const app = express();
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
 
 
 // Connecter à la base de données
@@ -178,7 +180,7 @@ router.delete('/galleries', async (req, res) => {
 //     }
 // });
 
-const idSchema = Joi.number().integer().positive().required();
+const idSchema = Joi.string().regex(/^[a-zA-Z0-9]+$/).required();
 
 router.delete('/galleries/:id', async (req, res) => {
     try {

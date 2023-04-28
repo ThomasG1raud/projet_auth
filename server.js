@@ -30,6 +30,7 @@ const images = require("./GestImages/images.js");
 const rateLimit = require("express-rate-limit");
 
 const app = express();
+app.use(bodyParser.json());
 app.use(morgan('combined'));
 var server = require('http').createServer(app)
 var io = require('socket.io')(server)
