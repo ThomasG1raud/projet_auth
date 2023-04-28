@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 
 
 // Connecter à la base de données
-mongoose.connect('mongodb://localhost:27017/images', { useNewUrlParser: true });
+// mongoose.connect('mongodb://localhost:27017/images', { useNewUrlParser: true });
 
 // Définir un schéma et un modèle pour les images
 const imageSchema = new mongoose.Schema({
